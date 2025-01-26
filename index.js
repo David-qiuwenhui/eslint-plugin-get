@@ -3,9 +3,13 @@
 module.exports = {
   rules: {
     get: {
+      meta: {
+        fixable: "code",
+      },
       create(context) {
         // console.log("heiheihei eslint plugin get");
-        console.log("context", context);
+        console.log("context.....", context.options);
+        const isFix = context.options[0];
 
         // visitor
         return {
@@ -22,6 +26,18 @@ module.exports = {
               context.report({
                 node,
                 message: `${functionName} must return a value`,
+                fix(fixer) {
+                  // 不自动修复;
+                  if (isFix === false) {
+                    return fixer.insertTextAfter(node, "");
+                  }
+
+                  const endPoint = node.range[1];
+                  return fixer.replaceTextRange(
+                    [endPoint - 1, endPoint],
+                    "return '' }"
+                  );
+                },
               });
             }
           },

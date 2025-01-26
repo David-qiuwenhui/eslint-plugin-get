@@ -9,6 +9,6 @@ module.exports = {
   },
   plugins: ["get"],
   rules: {
-    "get/get": ["warn"],
+    "get/get": ["warn", false],
   },
 };
